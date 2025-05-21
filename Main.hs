@@ -1,3 +1,40 @@
+--Felipe Merenda Izidorio a64379
+--Guilherme Quintero Lorenzi a64378
+-- para compilar a main: "ghc -o converter Main.hs"
+-- para testar: "./converter input.txt output.txt"
+
+--input.txt
+
+--module("Hospital Reception"){
+--    case 'Schedule Patient Appointment',
+--    case 'Schedule Patient Hospital Admission' as SPHA,
+--    case 'Patient Registration' as PR,
+--    case 'Patient Hospital Admission' as PHA,
+--    case 'File Insurance Forms / Claims' as FIFC,
+--    case 'File Medical Reports' as FMR,
+--    case 'Outpatient Hospital Admission' as OHA,
+--    case 'Inpatient Hospital Admission' as IHA,
+--    case 'Bed Allotment'
+--}
+
+--actor 'Receptionist';
+
+
+--'Receptionist' -- 'Schedule Patient Appointment'
+--'Receptionist' -- SPHA
+--'Receptionist' -- PR
+--'Receptionist' -- PHA
+--'Receptionist' -- FIFC
+--'Receptionist' -- FMR
+--'Receptionist' -e> FMR
+--PR -e> SPHA
+--PR -e> 'Schedule Patient Appointment'
+--PHA -i> PR
+--IHA -i> 'Bed Allotment'
+--OHA ->> PHA
+--IHA ->> PHA
+
+
 module Main where
 
 import Data.Char (isAlphaNum, isSpace)
@@ -19,7 +56,7 @@ data Diagram = Diagram {
 data Module = Module {
     moduleName :: String,
     useCases :: [UseCase],
-    moduleActors :: [Actor]  -- Novo campo para atores dentro do módulo
+    moduleActors :: [Actor] 
 } deriving (Show)
 
 data UseCase = UseCase {
@@ -269,6 +306,3 @@ testConversion input =
             case validateDiagram diagram of
                 Left err -> putStrLn err
                 Right validDiagram -> putStrLn $ generatePlantUML validDiagram
-
--- Exemplo de uso:
--- testConversion "module(\"Hospital Reception\"){ case 'Schedule Patient Appointment', case 'Schedule Patient Hospital Admission' as SPHA, case 'Patient Registration' as PR actor 'Receptionist'; } actor 'Receptionist'; 'Receptionist' -- 'Schedule Patient Appointment' PR -e> SPHA"
